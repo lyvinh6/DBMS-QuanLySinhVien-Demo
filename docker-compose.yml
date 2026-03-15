@@ -1,9 +1,10 @@
 version: '3.8'
 
 services:
-  dbms_server:
+  # Lớp 3: Database Server (MySQL)
+  db:
     image: mysql:8.0
-    container_name: demo_he_quan_tri_csdl
+    container_name: student_db_server
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: admin_password_123
@@ -11,4 +12,14 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - ./Demo_QuanLySinhVien.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # Lớp 2: App Server (Node.js) & Lớp 1 (Cung cấp Web)
+  app:
+    build: .
+    container_name: student_app_server
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
