@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ thống Quản lý Sinh viên - Demo</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; text-align: center; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background: #3498db; color: white; border: none; border-radius: 5px; transition: 0.3s; }
+        button:hover { background: #2980b9; }
+        table { margin: 20px auto; border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: center; }
+        th { background-color: #34495e; color: white; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Cổng thông tin tra cứu điểm Sinh viên</h1>
+        <p>Minh họa View mức ngoài (External View) trong Hệ quản trị CSDL</p>
+        <button onclick="xemDiem()">Tra cứu điểm học kỳ</button>
+        <div id="ketqua">
+            </div>
+    </div>
+
+    <script>
+        function xemDiem() {
+            document.getElementById('ketqua').innerHTML = "<p>Đang tải dữ liệu từ Database...</p>";
+            fetch('/api/diem')
+                .then(response => response.json())
+                .then(data => {
+                    let html = '<table><tr><th>Mã SV</th><th>Họ Tên</th><th>Môn Học</th><th>Điểm Số</th></tr>';
+                    data.forEach(row => {
+                        html += `<tr><td>${row.MaSV}</td><td>${row.HoTen}</td><td>${row.TenMH}</td><td><strong>${row.DiemSo}</strong></td></tr>`;
+                    });
+                    html += '</table>';
+                    document.getElementById('ketqua').innerHTML = html;
+                })
+                .catch(err => {
+                    document.getElementById('ketqua').innerHTML = "<p style='color:red;'>Lỗi kết nối cơ sở dữ liệu!</p>";
+                });
+        }
+    </script>
+</body>
+</html>
