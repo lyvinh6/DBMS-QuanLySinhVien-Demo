@@ -1,0 +1,46 @@
+-- DEMO: HỆ QUẢN TRỊ CSDL QUẢN LÝ SINH VIÊN
+--Topic 1: Overview of Database Management Systems
+
+-- 1. TẠO CẤU TRÚC BẢNG 
+CREATE TABLE KHOA (
+    MaKhoa VARCHAR(10) PRIMARY KEY,
+    TenKhoa NVARCHAR(100)
+);
+
+CREATE TABLE LOP (
+    MaLop VARCHAR(10) PRIMARY KEY,
+    TenLop NVARCHAR(50),
+    MaKhoa VARCHAR(10),
+    FOREIGN KEY (MaKhoa) REFERENCES KHOA(MaKhoa)
+);
+
+CREATE TABLE SINHVIEN (
+    MaSV VARCHAR(10) PRIMARY KEY,
+    HoTen NVARCHAR(100),
+    NgaySinh DATE,
+    MaLop VARCHAR(10),
+    FOREIGN KEY (MaLop) REFERENCES LOP(MaLop)
+);
+
+CREATE TABLE MONHOC (
+    MaMH VARCHAR(10) PRIMARY KEY,
+    TenMH NVARCHAR(100),
+    SoTinChi INT
+);
+
+-- Bảng DIEM kết nối SINHVIEN và MONHOC để giải quyết bài toán dư thừa dữ liệu
+CREATE TABLE DIEM (
+    MaSV VARCHAR(10),
+    MaMH VARCHAR(10),
+    DiemSo FLOAT,
+    PRIMARY KEY (MaSV, MaMH),
+    FOREIGN KEY (MaSV) REFERENCES SINHVIEN(MaSV),
+    FOREIGN KEY (MaMH) REFERENCES MONHOC(MaMH)
+);
+
+-- 2. THÊM DỮ LIỆU MẪU
+INSERT INTO KHOA VALUES ('CNTT', N'Công nghệ thông tin');
+INSERT INTO LOP VALUES ('KTPM01', N'Kỹ thuật phần mềm 01', 'CNTT');
+INSERT INTO SINHVIEN VALUES ('SV001', N'Nguyễn Văn A', '2003-05-15', 'KTPM01');
+INSERT INTO MONHOC VALUES ('DB01', N'Hệ quản trị CSDL', 3);
+INSERT INTO DIEM VALUES ('SV001', 'DB01', 8.5);
