@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  dbms_server:
+    image: mysql:8.0
+    container_name: demo_he_quan_tri_csdl
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: admin_password_123
+      MYSQL_DATABASE: QuanLySinhVienDB
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./Demo_QuanLySinhVien.sql:/docker-entrypoint-initdb.d/init.sql
